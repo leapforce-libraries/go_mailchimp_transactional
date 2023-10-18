@@ -59,7 +59,7 @@ type MessageClickDetail struct {
 }
 
 type SearchMessagesConfig struct {
-	Key      string      `json:"key"`
+	Key      *string     `json:"key"`
 	Query    *string     `json:"query,omitempty"`
 	DateFrom *civil.Date `json:"date_from,omitempty"`
 	DateTo   *civil.Date `json:"date_to,omitempty"`
@@ -72,6 +72,10 @@ type SearchMessagesConfig struct {
 func (service *Service) SearchMessages(cfg *SearchMessagesConfig) (*[]Message, *errortools.Error) {
 	if cfg == nil {
 		return nil, errortools.ErrorMessage("SearchMessagesConfig must not be nil")
+	}
+
+	if cfg.Key == nil {
+		cfg.Key = &service.apiKey
 	}
 
 	var messages []Message

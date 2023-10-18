@@ -14,14 +14,12 @@ const (
 )
 
 type Service struct {
-	server        string
 	apiKey        string
 	httpService   *go_http.Service
 	errorResponse *ErrorResponse
 }
 
 type ServiceConfig struct {
-	Server string
 	ApiKey string
 }
 
@@ -30,16 +28,11 @@ func NewService(cfg *ServiceConfig) (*Service, *errortools.Error) {
 		return nil, errortools.ErrorMessage("ServiceConfig must not be a nil pointer")
 	}
 
-	if cfg.Server == "" {
-		return nil, errortools.ErrorMessage("Server not provided")
-	}
-
 	if cfg.ApiKey == "" {
 		return nil, errortools.ErrorMessage("ApiKey not provided")
 	}
 
 	var service = Service{
-		server: cfg.Server,
 		apiKey: cfg.ApiKey,
 	}
 
@@ -81,7 +74,7 @@ func (service *Service) httpRequest(requestConfig *go_http.RequestConfig) (*http
 }
 
 func (service *Service) url(path string) string {
-	return fmt.Sprintf("%s/%s", fmt.Sprintf(apiUrl, service.server), path)
+	return fmt.Sprintf("%s/%s", apiUrl, path)
 }
 
 func (service *Service) ApiName() string {
